@@ -1,5 +1,7 @@
-package org.TODOTracker;
+package org.TODOTracker.contoller;
 
+import org.TODOTracker.model.Task;
+import org.TODOTracker.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

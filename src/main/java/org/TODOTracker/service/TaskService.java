@@ -1,5 +1,9 @@
-package org.TODOTracker;
+package org.TODOTracker.service;
 
+import org.TODOTracker.repository.TaskRepository;
+import org.TODOTracker.repository.UserRepository;
+import org.TODOTracker.model.Task;
+import org.TODOTracker.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
