@@ -13,15 +13,17 @@ import java.util.List;
 //@Setter
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "email_id")
     private String emailId;
 
+    @Column(name = "name")
     private String name;
 
-    @Value("${my.property:true}")
-    private Boolean isExist;
+    @Column(name = "is_exist")
+    private Boolean isExist = true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Task> tasks;

@@ -6,6 +6,7 @@ import org.hibernate.type.DateType;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.lang.*;
+import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
@@ -13,18 +14,23 @@ import javax.persistence.*;
 //@Setter
 public class Task {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @Column(name = "title")
     private String title;
+
+    @Column(name = "description")
     private String description;
 
-    private DateType deadline;
+    @Column(name = "deadline")
+    private LocalDate deadline;
 
-    private DateType createdDate;
+    @Column(name = "created_date")
+    private LocalDate createdDate;
 
-    @Value("${my.property:false}")
-    private Boolean isExist;
+    @Column(name = "is_exist")
+    private Boolean isExist = true;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -54,19 +60,19 @@ public class Task {
         this.description = description;
     }
 
-    public DateType getDeadline() {
+    public LocalDate getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(DateType deadline) {
+    public void setDeadline(LocalDate deadline) {
         this.deadline = deadline;
     }
 
-    public DateType getCreatedDate() {
+    public LocalDate getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(DateType createdDate) {
+    public void setCreatedDate(LocalDate createdDate) {
         this.createdDate = createdDate;
     }
 

@@ -1,5 +1,6 @@
 package org.TODOTracker.contoller;
 
+import org.TODOTracker.mapper.TaskMapper;
 import org.TODOTracker.model.Task;
 import org.TODOTracker.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping
-    public Task createTask(@RequestBody Task task) {
+    public TaskMapper createTask(@RequestBody TaskMapper task) {
         return taskService.createTask(task);
     }
 

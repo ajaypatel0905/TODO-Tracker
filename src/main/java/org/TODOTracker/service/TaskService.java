@@ -1,5 +1,6 @@
 package org.TODOTracker.service;
 
+import org.TODOTracker.mapper.TaskMapper;
 import org.TODOTracker.repository.TaskRepository;
 import org.TODOTracker.repository.UserRepository;
 import org.TODOTracker.model.Task;
@@ -16,11 +17,22 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public Task createTask(Task task) {
-        User user = userRepository.findById(task.getUser().getId())
+    public TaskMapper createTask(TaskMapper taskMapper) {
+        User user = userRepository.findById(taskMapper.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        Task task = new Task();
+        task.setCreatedDate(taskMapper.getCreatedDate());
+        task.setDeadline(taskMapper.getDeadline());
         task.setUser(user);
-        return taskRepository.save(task);
+        task.setDescription(taskMapper.getDescription());
+        task.setTitle(taskMapper.getTitle());
+
+        taskRepository.save(task);
+
+        taskMapper.setId(task.getId());
+        return taskMapper;
+
     }
 
     public List<Task> getTasksByUserId(Long userId) {
