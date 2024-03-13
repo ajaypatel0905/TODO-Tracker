@@ -1,6 +1,8 @@
 package org.TODOTracker.service;
 
-import org.TODOTracker.mapper.TaskMapper;
+
+import org.TODOTracker.convertor.TaskConvertor;
+import org.TODOTracker.mapper.TaskResponse;
 import org.TODOTracker.repository.TaskRepository;
 import org.TODOTracker.repository.UserRepository;
 import org.TODOTracker.model.Task;
@@ -8,6 +10,7 @@ import org.TODOTracker.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,34 +20,28 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public TaskMapper createTask(TaskMapper taskMapper) {
-        User user = userRepository.findById(taskMapper.getUserId())
+    private final TaskConvertor convertor = new TaskConvertor();
+
+    public TaskResponse createTask(Task task) {
+        User user = userRepository.findById(task.getUser().getId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        Task task = new Task();
-        task.setCreatedDate(taskMapper.getCreatedDate());
-        task.setDeadline(taskMapper.getDeadline());
-        task.setUser(user);
-        task.setDescription(taskMapper.getDescription());
-        task.setTitle(taskMapper.getTitle());
-
-        taskRepository.save(task);
-
-        taskMapper.setId(task.getId());
-        return taskMapper;
+        return convertor.convert(taskRepository.save(task));
 
     }
 
-    public List<Task> getTasksByUserId(Long userId) {
-        return taskRepository.findByUserId(userId);
+    public List<TaskResponse> getTasksByUserId(Long userId) {
+        List<Task> tasks = taskRepository.findByUserId(userId);
+
+        return convertor.convertAll(tasks);
     }
 
-    public Task updateTask(Long taskId, Task taskDetails) {
+    public TaskResponse updateTask(Long taskId, Task taskDetails) {
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
         task.setTitle(taskDetails.getTitle());
         task.setDescription(taskDetails.getDescription());
-        return taskRepository.save(task);
+        return convertor.convert(taskRepository.save(task));
     }
 
     public void deleteTask(Long taskId) {

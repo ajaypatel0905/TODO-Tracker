@@ -1,6 +1,7 @@
 package org.TODOTracker.contoller;
 
-import org.TODOTracker.mapper.TaskMapper;
+
+import org.TODOTracker.mapper.TaskResponse;
 import org.TODOTracker.model.Task;
 import org.TODOTracker.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,17 +16,17 @@ public class TaskController {
     private TaskService taskService;
 
     @PostMapping
-    public TaskMapper createTask(@RequestBody TaskMapper task) {
+    public TaskResponse createTask(@RequestBody Task task) {
         return taskService.createTask(task);
     }
 
     @GetMapping("/{userId}")
-    public List<Task> getTasksByUserId(@PathVariable Long userId) {
+    public List<TaskResponse> getTasksByUserId(@PathVariable Long userId) {
         return taskService.getTasksByUserId(userId);
     }
 
     @PutMapping("/{taskId}")
-    public Task updateTask(@PathVariable Long taskId, @RequestBody Task task) {
+    public TaskResponse updateTask(@PathVariable Long taskId, @RequestBody Task task) {
         return taskService.updateTask(taskId, task);
     }
 
