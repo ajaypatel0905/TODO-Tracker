@@ -1,10 +1,13 @@
 package org.TODOTracker.service;
 
+import org.TODOTracker.TaskRequest;
 import org.TODOTracker.repository.TaskRepository;
 import org.TODOTracker.repository.UserRepository;
 import org.TODOTracker.model.Task;
 import org.TODOTracker.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,24 +19,30 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public Task createTask(Task task) {
-        User user = userRepository.findById(task.getUser().getId())
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        task.setUser(user);
-        return taskRepository.save(task);
+    public void createTask(Task task) {
+        taskRepository.save(task);
     }
 
-    public List<Task> getTasksByUserId(Long userId) {
+    public List<Task> getAllUserTasks(Long userId) {
         return taskRepository.findByUserId(userId);
     }
 
-    public Task updateTask(Long taskId, Task taskDetails) {
+    public void updateTaskStatus(Long taskId){
         Task task = taskRepository.findById(taskId)
                 .orElseThrow(() -> new RuntimeException("Task not found"));
-        task.setTitle(taskDetails.getTitle());
-        task.setDescription(taskDetails.getDescription());
-        return taskRepository.save(task);
+        task.setTaskStatus(task.getTaskStatus() ? false : true);
     }
+
+
+//    public Task updateTask(Long taskId, TaskRequest taskrequest) {
+//        Task task = taskRepository.findById(taskId)
+//                .orElseThrow(() -> new RuntimeException("Task not found"));
+//        task.setTitle(taskrequest.getTitle());
+//        task.setCreatedDate(taskrequest.getCreatedDate());
+//        task.setDeadline(taskrequest.getDeadline());
+//        task.setDescription(taskrequest.getDescription());
+//        return taskRepository.save(task);
+//    }
 
     public void deleteTask(Long taskId) {
         taskRepository.deleteById(taskId);
