@@ -1,11 +1,15 @@
 package org.TODOTracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.type.DateType;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.lang.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 import javax.persistence.*;
 
 @Entity
@@ -19,15 +23,16 @@ public class Task {
     private String title;
     private String description;
 
-    private DateType deadline;
+    private Date deadline;
 
-    private DateType createdDate;
+    private Date createdDate;
 
-    @Value("${my.property:false}")
-    private Boolean isExist;
+//    @Value("${my.property:false}")
+    private Boolean completed = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
+    @JsonIgnore
     private User user;
 
     public Long getId() {
@@ -54,28 +59,28 @@ public class Task {
         this.description = description;
     }
 
-    public DateType getDeadline() {
+    public Date getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(DateType deadline) {
+    public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
 
-    public DateType getCreatedDate() {
+    public Date getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(DateType createdDate) {
+    public void setCreatedDate(Date createdDate) {
         this.createdDate = createdDate;
     }
 
-    public Boolean getExist() {
-        return isExist;
+    public Boolean getCompleted() {
+        return completed;
     }
 
-    public void setExist(Boolean exist) {
-        isExist = exist;
+    public void setCompleted(Boolean completed) {
+        this.completed = completed;
     }
 
     public User getUser() {
@@ -92,7 +97,7 @@ public class Task {
                 ", description='" + description + '\'' +
                 ", deadline=" + deadline +
                 ", createdDate=" + createdDate +
-                ", isExist=" + isExist +
+                ", completed=" + completed +
                 ", user=" + user +
                 '}';
     }

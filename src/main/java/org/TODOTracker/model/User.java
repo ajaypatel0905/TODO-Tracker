@@ -1,5 +1,6 @@
 package org.TODOTracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,10 +21,12 @@ public class User {
 
     private String name;
 
-    @Value("${my.property:true}")
-    private Boolean isExist;
+    //@Value("${my.property:true}")
+//    @Column(columnDefinition = "BOOLEAN DEFAULT TRUE")
+    private Boolean isExist = true;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Task> tasks;
 
     public Long getId() {
@@ -64,6 +67,10 @@ public class User {
 
     public void setTasks(List<Task> tasks) {
         this.tasks = tasks;
+    }
+
+    public void setTask(Task task) {
+        this.tasks.add(task);
     }
 
     public String toString() {
